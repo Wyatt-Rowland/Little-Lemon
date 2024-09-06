@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import './index.css';
 import './header.css'
+import './main.css'
+import './hero.css'
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';

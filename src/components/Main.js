@@ -6,7 +6,7 @@ const Main = () => {
       <main className="main">
         <div role='grid' className='main-grid'>
           <div className='hero-background flex-center'>
-            {/* <Hero /> */}
+            <Hero />
           </div>
           <div className='specials-bg'>
             {/* <Specials /> */}
