@@ -1,4 +1,7 @@
+import React from 'react';
 import './App.css';
+import './index.css';
+import './header.css'
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
@@ -6,9 +9,11 @@ import Footer from './components/Footer';
 function App() {
   return (
     <>
-      <Header />
-      <Main />
-      <Footer />
+      <div role='grid' className='grid-container'>
+        <Header className='header' />
+        <Main className='main'/>
+        <Footer className='footer' />
+      </div>
     </>
   );
 }
