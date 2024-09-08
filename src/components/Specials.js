@@ -1,37 +1,37 @@
 import greekSalad from '../images/greek salad.jpg'
-import moped from '../images/moped2.png'
+import bruchetta from '../images/bruchetta.svg'
+import lemonDesert from '../images/lemon dessert.jpg'
+import Card from './Card'
+
 
 const Specials = () => {
     return (
-        <div className="specials-container">
+        <section className="specials-container flex-center align-center column">
             <div className="text-button">
                 <h1 className="specials-title">This Weeks Specials!</h1>
                 <button className="specials-button">Online Menu</button>
             </div>
-            <div className="specials-card">
-                <div className="card">
-                    <img src={greekSalad} alt='greek salad'/>
-                    <div>
-                        <div className='card-title'>
-                            <h3>Greek Salad</h3>
-                            <h3 className='card-price'>$12.99</h3>
-                        </div>
-                        <p>The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons. </p>
-                        <div className='card-button'>
-                            <a as='h4'>Order a delivery </a>
-                            <img className='moped-icon' src={moped} alt='moped icon' />
-                        </div>
-                    </div>
-                </div>
-                <div className="card">
-                    <img className='card-img' src={greekSalad} alt='greek salad'/>
-                </div>
-                <div className="card">
-                    <img className='card-img' src={greekSalad} alt='greek salad'/>
-
-                </div>
+            <div className="specials-card flex-evenly">
+                <Card 
+                    image={greekSalad}
+                    title="Greek Salad"
+                    price="$12.99"
+                    description="The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons. "
+                />
+                <Card 
+                    image={bruchetta}
+                    title='Bruchetta'
+                    price="$ 5.99"
+                    description="Our Bruschetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil."
+                />
+                <Card 
+                    image={lemonDesert}
+                    title="Lemon Dessert"
+                    price="$ 5.00"
+                    description="This comes straight from grandma’s recipe book, every last ingredient has been sourced and is as authentic as can be imagined. "
+                />
             </div>
-        </div>
+        </section>
     )
 }
 export default Specials;

@@ -9,7 +9,7 @@ const Main = () => {
             <Hero />
           </div>
           <div className='specials-bg'>
-            {/* <Specials /> */}
+            <Specials />
           </div>
         </div>
       </main>

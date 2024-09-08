@@ -1,0 +1,86 @@
+.specials-container {
+    text-align: center;
+    width: 100%;
+    gap: 4rem;
+    padding-bottom: 2rem;
+}
+
+.specials-card {
+    width: 70%;
+    gap: 2rem;
+    flex-direction: column;
+    text-align: start;
+}
+
+.card > img {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+
+.card, .card > img {
+    border-radius: 16px 16px 0 0;
+}
+
+.card {
+    background-color: var(--highlight-color-one);
+    height: 100%;
+}
+
+.card-title h3, .card-text p, a  {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--highlight-color-two);
+}
+
+ .card-title:first-child {
+    white-space: nowrap;
+    font: 500 var(--font-size-20) 'Markazi', serif;
+ }
+
+ .card-price {
+    color: var(--secondary-color-one);
+    font: 800 var(--font-size-18) 'Karla', serif;
+    padding-left: 2rem;
+ }
+
+.card-text {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.moped-icon {
+    height: 2rem;
+    width: auto;
+    margin-left: 1rem;
+}
+
+@media (min-width: 1200px) {
+    .specials-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4rem;
+    }
+    .card-title:first-child {
+        font: 500 var(--font-size-24) 'Markazi', serif;
+     }
+     
+    .text-button {
+        padding-top: 3rem;
+    }
+
+    .text-button {
+        width: 65%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-wrap: nowrap;
+    }
+    
+}

@@ -23,6 +23,7 @@
   .rest-description {
     text-wrap: wrap;
     color: var(--highlight-color-one);
+
   }
 
   .hero-background {
@@ -46,6 +47,7 @@
     .hero-img {
         display: block;
         width: 16rem;
+        height: auto;
         border-radius: 16px;
         margin: 0 0 -10rem 0;
     }
