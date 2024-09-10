@@ -1,12 +1,4 @@
 /*hero.css*/
-  button {
-    background-color: var(--main-color-two);
-    height: 60px;
-    width: 260px;
-    border-radius: 16px;
-    font: 800 24px 'Karla', serif;
-    border: none;
-  }
   
   .title-text {
     color: var(--main-color-two);

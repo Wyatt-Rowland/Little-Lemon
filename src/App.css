@@ -56,6 +56,25 @@ img {
   width: 100px;
 }
 
+button {
+  background-color: var(--main-color-two);
+  height: 60px;
+  width: 260px;
+  border-radius: 16px;
+  font: 800 24px 'Karla', serif;
+  border: none;
+  transition: filter 0.3s ease; /* Smooth transition */
+}
+
+button:hover {
+  filter: brightness(70%); /* Darkens the color by 10% */
+}
+
+button:active {
+  filter: brightness(50%); /* Darkens the color by 10% */
+
+}
+
 .main-grid {
   display: grid;
   grid-template-columns: 1fr;

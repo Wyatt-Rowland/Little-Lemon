@@ -35,7 +35,6 @@ code {
 
 .grid-container{
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: auto 5fr auto;
   /* grid-gap: 20px; */
   height: 100vh;
