@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Little-Lemon/static/css/main.7e4116d7.css",
+    "main.css": "/Little-Lemon/static/css/main.a13acfd7.css",
     "main.js": "/Little-Lemon/static/js/main.6916a0fd.js",
     "static/js/453.99c1801e.chunk.js": "/Little-Lemon/static/js/453.99c1801e.chunk.js",
     "static/media/bruchetta.svg": "/Little-Lemon/static/media/bruchetta.29ea078fea3d3120ed22402e901b5bbc.svg",
@@ -9,12 +9,12 @@
     "static/media/Logo.svg": "/Little-Lemon/static/media/Logo.6c132dfefa69396bba43f72aa595e62f.svg",
     "static/media/moped2.png": "/Little-Lemon/static/media/moped2.9deb8a41f49ae2194a1d.png",
     "index.html": "/Little-Lemon/index.html",
-    "main.7e4116d7.css.map": "/Little-Lemon/static/css/main.7e4116d7.css.map",
+    "main.a13acfd7.css.map": "/Little-Lemon/static/css/main.a13acfd7.css.map",
     "main.6916a0fd.js.map": "/Little-Lemon/static/js/main.6916a0fd.js.map",
     "453.99c1801e.chunk.js.map": "/Little-Lemon/static/js/453.99c1801e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e4116d7.css",
+    "static/css/main.a13acfd7.css",
     "static/js/main.6916a0fd.js"
   ]
 }
