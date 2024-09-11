@@ -1,3 +1,8 @@
+header, nav, .container {
+  max-width: 100vw;
+  width: 100%;
+}
+
 .nav-container {
   width: 100%;
   height: 6rem;
@@ -5,14 +10,12 @@
   position: relative;
 }
 
-
 .nav-list {
   text-wrap: nowrap;
   width: 100%;
   gap: 1em;
   flex-direction: column;
 }
-
 
 .list-container {
   position: absolute;
@@ -34,6 +37,10 @@ li a {
 .logo {
   margin-left: 1.5em;
   height: 3rem;
+}
+
+.logo img {
+  width: 300px;
 }
 
 .hamburger {
@@ -107,7 +114,7 @@ li a {
   }
 
   .nav-container {
-    width: 70%;
+    width: 80%;
   }
 
   .nav-list {
@@ -118,12 +125,19 @@ li a {
     background-color: transparent;
     position: relative;
     top: 0;
+    width: 100%;
   }
 
 
-  .nav-list, .list-container {
+  .list-container {
     display: flex;
     justify-content: space-between; 
+  }
+
+  .nav-list {
+    display: flex;
+    justify-content: end;
+    
   }
 
   .logo {
@@ -141,4 +155,10 @@ li a {
     border-radius: 16px;
   }
 
+}
+
+@media (min-width: 1200px) {
+  .nav-container {
+    width: 70%;
+  }
 }

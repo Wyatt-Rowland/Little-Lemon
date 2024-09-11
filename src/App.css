@@ -37,32 +37,29 @@
 }
 
 h1 {
-  font: 400 64px 'Markazi', serif;
+  font: 400 var(--font-size-40) 'Markazi', serif;
 }
 h2 {
-  font: 400 40px 'Markazi', serif;
+  font: 400 var(--font-size-24) 'Markazi', serif;
 }
 p {
-  font: 400 20px 'Karla', serif;
+  font: 500 var(--font-size-18) 'Karla', serif;
 }
 
 ul {
   list-style: none;
 }
 
-/* Just Setting a default height for images */
-img {
-  height: 100px;
-  width: 100px;
-}
+
 
 button {
   background-color: var(--main-color-two);
-  height: 60px;
-  width: 260px;
-  border-radius: 16px;
-  font: 800 24px 'Karla', serif;
+  /* height: 60px;
+  width: 260px; */
+  font: 800 20px 'Karla', serif; 
+  padding: .5rem 2rem;
   border: none;
+  border-radius: 16px;
   transition: filter 0.3s ease; /* Smooth transition */
 }
 
@@ -82,7 +79,22 @@ button:active {
 }
 
 
+@media (min-width: 400px) {
+  h1 {
+    font: 400 var(--font-size-64) 'Markazi', serif;
+  }
+  h2 {
+    font: 400 var(--font-size-40) 'Markazi', serif;
+  }
+  p {
+    font: 400 var(--font-size-20) 'Karla', serif;
+  }
+  button {
+    font: 800 24px 'Karla', serif; 
+    padding: 1rem 3rem;
 
+  }
+}
 
 
 @media (min-width: 1000px) {
@@ -96,3 +108,11 @@ button:active {
     grid-template-rows: 1fr 4fr 3fr;
   }
 }
+
+
+@media (min-width: 1500px) {
+  .nav-container, .hero-container {
+    width: 60%;
+  }
+}
+
