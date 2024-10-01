@@ -1,7 +1,7 @@
 import greekSalad from '../images/greek salad.jpg'
 import bruchetta from '../images/bruchetta.svg'
 import lemonDesert from '../images/lemon dessert.jpg'
-import Card from './Card'
+import SpecialsCard from './SpecialsCard'
 
 
 const Specials = () => {
@@ -12,19 +12,19 @@ const Specials = () => {
                 <button className="specials-button">Online Menu</button>
             </div>
             <div className="specials-card flex-evenly">
-                <Card 
+                <SpecialsCard 
                     image={greekSalad}
                     title="Greek Salad"
                     price="$12.99"
                     description="The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons. "
                 />
-                <Card 
+                <SpecialsCard 
                     image={bruchetta}
                     title='Bruchetta'
                     price="$ 5.99"
                     description="Our Bruschetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil."
                 />
-                <Card 
+                <SpecialsCard 
                     image={lemonDesert}
                     title="Lemon Dessert"
                     price="$ 5.00"

@@ -1,6 +1,6 @@
 import moped from '../images/moped2.png'
 
-const Card = ({ image, title, price, description }) => (
+const SpecialsCard = ({ image, title, price, description }) => (
     <div className="card flex-between column">
         <img className='card-img' src={image} alt={title} loading='lazy'/>
         <div  className='card-text'>
@@ -17,4 +17,4 @@ const Card = ({ image, title, price, description }) => (
     </div>
 );
 
-export default Card;
+export default SpecialsCard;

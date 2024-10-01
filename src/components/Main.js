@@ -1,5 +1,6 @@
 import Hero from './Hero';
 import Specials from './Specials'
+import Testimonials from './Testimonials.js'
 
 const Main = () => {
     return (
@@ -10,6 +11,9 @@ const Main = () => {
           </div>
           <div className='specials-bg'>
             <Specials />
+          </div>
+          <div className='testimonials-bg'>
+            <Testimonials />
           </div>
         </div>
       </main>

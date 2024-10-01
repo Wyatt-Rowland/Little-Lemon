@@ -1,7 +1,7 @@
 .specials-container {
     text-align: center;
     width: 100%;
-    gap: 4rem;
+    gap: 1rem;
     padding-bottom: 2rem;
 }
 
@@ -67,6 +67,24 @@ a {
     }
 }
 
+@media (min-width: 1000px) {
+    .specials-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4rem;
+        width: 90%;
+    }
+         
+    .text-button {
+        padding-top: 1rem;
+    }
+    .text-button h1 {
+        padding-right: 1rem;
+    }
+}
+
+
+
 @media (min-width: 1200px) {
     .specials-card {
         display: grid;
@@ -76,10 +94,6 @@ a {
     .card-title:first-child {
         font: 500 var(--font-size-24) 'Markazi', serif;
      }
-     
-    .text-button {
-        padding-top: 3rem;
-    }
 
     .text-button {
         width: 65%;
@@ -87,6 +101,7 @@ a {
         align-items: center;
         justify-content: space-between;
         text-wrap: nowrap;
+        padding-top: 3rem;
     }
     
 }

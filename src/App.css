@@ -75,8 +75,9 @@ button:active {
 .main-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 3fr 3fr;
+  /* grid-template-rows: auto 3fr 3fr; */
 }
+
 
 
 @media (min-width: 400px) {
@@ -105,14 +106,6 @@ button:active {
   }
 
   .main-grid {
-    grid-template-rows: 1fr 4fr 3fr;
+    /* grid-template-rows: auto; */
   }
 }
-
-
-@media (min-width: 1500px) {
-  .nav-container, .hero-container {
-    width: 60%;
-  }
-}
-
