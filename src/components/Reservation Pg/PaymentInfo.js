@@ -28,7 +28,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
     return (
         <div className="payment-info-grid">
         <div className="form-group card-name-container">
-          <label htmlFor="cardName">Name on Card</label>
+          <label htmlFor="cardName">Name on Card*</label>
           <input
             type="text"
             id="cardName"
@@ -41,7 +41,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
         </div>
   
         <div className="form-group cardNumber">
-          <label htmlFor="cardNumber">Card Number</label>
+          <label htmlFor="cardNumber">Card Number*</label>
           <input
             type="text"
             id="cardNumber"
@@ -56,7 +56,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
         </div>
   
         <div className="form-group exp-date">
-          <label htmlFor="expDate">Expiration Date</label>
+          <label htmlFor="expDate">Expiration Date*</label>
           <input
             type="text"
             id="expDate"
@@ -72,7 +72,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
         </div>
   
         <div className="form-group cvv">
-          <label htmlFor="CVV">CVV</label>
+          <label htmlFor="CVV">CVV*</label>
           <input
             type="password" // Mask the CVV
             id="CVV"

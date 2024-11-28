@@ -165,18 +165,7 @@
   background: #FFCDB2;
   overflow: hidden;
 }
-.circle.per-25 {
-  background-image: conic-gradient(#aa495c 25%, #ffa97b 0);
-}
-.circle.per-50 {
-  background-image: conic-gradient(#B5838D 50%, #FFCDB2 0);
-}
-.circle.per-75 {
-  background-image: conic-gradient(#B5838D 75%, #FFCDB2 0);
-}
-.circle.per-100 {
-  background-image: conic-gradient(#B5838D 100%, #FFCDB2 0);
-}
+
 .circle .inner {
   display: flex;
   justify-content: center;
@@ -211,6 +200,19 @@ select option {
   
 }
 
+.success {
+  justify-content: center;
+  text-align: center;
+  height: 16rem;
+}
 
+/* 
+.glow-button {
+  transform: scale(1.1);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
 
-
+.shrink-btn {
+  transform: scale(.8);
+}
+ */

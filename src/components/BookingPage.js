@@ -9,23 +9,45 @@ import ReservationSuccessful from './Reservation Pg/ReservationSuccess.js'
 const BookingPage = () => {
   const [formPage, setFormPage] = useState(0);
 
-  // Centralized form state
+  const today = new Date();
+  const initialMonth = today.toLocaleString("default", { month: "short" }); // Short month format
+  const initialYear = today.getFullYear().toString(); // Convert to string
+
   const [formData, setFormData] = useState({
     guests: "",
-    day: "",
-    month: "",
+    day: today.getDate().toString(), // Convert to string
+    month: initialMonth, // Short month name
+    year: initialYear, // Current year
     time: "",
     occasion: "",
     tableDetails: "",
     firstName: "",
     lastName: "",
-    phone: "",
+    phoneNumber: "",
     email: "",
+    cardName: "",
+    cardNumber: "",
+    expDate: "",
+    CVV: "",
+    contactMethod: ""
   });
 
-  const totalInputs = Object.keys(formData).length; // Total inputs for progress calculation
-  const completedInputs = Object.values(formData).filter((value) => value.trim() !== "").length;
+  const excludedKeys = ["month", "tableDetails", "day", "year", "occasion", "contactMethod"];
+
+
+  const validKeys = Object.keys(formData).filter((key) => !excludedKeys.includes(key));
+
+  const totalInputs = validKeys.length; // Count only keys not excluded
+  
+  const completedInputs = validKeys.filter((key) => {
+    const value = formData[key];
+    return typeof value === "string" && value.trim() !== "";
+  }).length;
+  
   const progressPercent = Math.min((completedInputs / totalInputs) * 100, 100);
+
+  console.log(completedInputs, totalInputs)
+
 
   const handleNext = () => {
     setFormPage((prevPage) => prevPage + 1);
@@ -37,7 +59,7 @@ const BookingPage = () => {
 
 
   // Titles for each page
-  const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "Reservation Successful!"]; // Add more titles as needed
+  const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "!"]; // Add more titles as needed
 
 
   const renderFormStep = () => {
@@ -60,14 +82,19 @@ const BookingPage = () => {
             <div className="reservation-form">
                 <h3>Form Progress</h3>
                 <div class="dashboard">
-                      <div class="wrap-circles">
-                        <div class="circle"
-                          style={{
-                            backgroundImage: `conic-gradient(#B5838D ${progressPercent}%, #FFCDB2 0%)`,
-                          }}>
-                          <div className="inner">{Math.round(progressPercent)}%</div>
-                        </div>
-                      </div>
+                    <div
+                      className="circle"
+                      style={{
+                        backgroundImage:
+                          formPage === formTitles.length - 1
+                            ? `conic-gradient(#4CAF50 100%, #DFF0D8 0%)` // Green color for success
+                            : `conic-gradient(#B5838D ${progressPercent}%, #FFCDB2 0%)`,
+                        transform: formPage === formTitles.length - 1 ? "scale(2)" : "scale(1)", // Scale up on success page
+                        transition: "transform 0.3s ease, background-image 0.3s ease", // Smooth transition
+                      }}
+                    >
+                    <div className="inner">{Math.round(progressPercent)}%</div>
+                  </div>
                 </div>
 
                 <h3>{formTitles[formPage]}</h3>
@@ -76,13 +103,13 @@ const BookingPage = () => {
                   </form>
                   <div className="flex-center buttons">
                     <button 
-                      className="back-btn"
-                      onClick={handleBack} 
-                      disabled={formPage === 0} // Disable if on the first page
-                    
+                      className={`back-btn ${progressPercent === 100 ? "shrink-btn" : ""}`}
+                      onClick={handleNext}
+                      disabled={formPage === 0} // Adjust for the last page
                     >Back</button>
                     <button
-                      onClick={handleNext} 
+                      className={`next-btn ${progressPercent === 100 ? "glow-button" : ""}`}
+                      onClick={handleNext}
                       disabled={formPage === formTitles.length - 1} // Adjust for the last page
                     >Next</button>                    
                   </div>

@@ -73,10 +73,10 @@ const PersonalInfo = ({ formData, setFormData }) => {
             name="contactMethod"
             id="method"
             value={formData.contactMethod}
-            onClick={handleInputChange}
+            onChange={handleInputChange}
           >
-            <option value="email">Email</option>
             <option value="phone">Phone</option>
+            <option value="email">Email</option>
           </select>
         </div>
       </div>
