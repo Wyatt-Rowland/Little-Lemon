@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import './index.css';
@@ -15,6 +15,8 @@ import Construction from './components/Construction';
 import BookingPage from './components/BookingPage';
 
 function App() {
+  const [unavailableDates, setUnavailableDates] = useReducer([]);
+
   return (
     <Router>
       <div role='grid' className='grid-container'>
@@ -23,7 +25,11 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/about" element={<Construction />} />
           <Route path="/menu" element={<Construction />} />
-          <Route path="/reservations" element={<BookingPage />} />
+          <Route path="/reservations" element={
+            <BookingPage
+            unavailableDates={unavailableDates}
+            setUnavailableDates={setUnavailableDates}
+              />} />
           <Route path="/order-online" element={<Construction />} />
           <Route path="/login" element={<Construction />} />
         </Routes>
@@ -38,10 +44,3 @@ export default App;
 
 
 
-// <>
-// <div role='grid' className='grid-container'>
-//   <Header className='header' />
-//   <Main className='main'/>
-//   <Footer className='footer' />
-// </div>
-// </>

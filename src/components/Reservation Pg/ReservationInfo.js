@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const ReservationInfo = ({ formData, setFormData }) => {
+const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailableDates }) => {
   const today = new Date();
   const initialMonth = today.toLocaleString("default", { month: "short" });
   const initialYear = today.getFullYear();
@@ -19,7 +19,7 @@ const ReservationInfo = ({ formData, setFormData }) => {
     const currentMonthIndex = today.getMonth();
     const currentYear = today.getFullYear();
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       const monthIndex = (currentMonthIndex + i) % 12;
       const year = currentYear + Math.floor((currentMonthIndex + i) / 12);
 
@@ -59,28 +59,50 @@ const ReservationInfo = ({ formData, setFormData }) => {
     const times = [];
     const startHour = 8; // 8:00 AM
     const endHour = 21; // 9:00 PM
-  
+    
     const selectedDate = new Date(`${formData.month} ${formData.day}, ${formData.year}`);
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Remove time from today
-  
+    
     const isToday = selectedDate.toDateString() === today.toDateString();
     const currentTime = new Date();
+
+    const formattedPlaceholderTime = currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+
+
     currentTime.setHours(currentTime.getHours() + 3); // Add 3 hours to the current time
+    
     const currentHour = isToday ? currentTime.getHours() : startHour;
+  
+    // Add a placeholder option
+    times.push(
+      <option key="placeholder" value="" disabled>
+        {formattedPlaceholderTime}
+      </option>
+    );
   
     for (let i = currentHour; i <= endHour; i++) {
       const period = i < 12 ? "AM" : "PM";
       const hour = i % 12 === 0 ? 12 : i % 12;
       const timeString = `${hour}:00 ${period}`;
+
+    // Check if this time is unavailable
+    const isUnavailable = unavailableDates.some(
+      (date) =>
+        date.day === formData.day &&
+        date.month === formData.month &&
+        date.year === formData.year &&
+        date.time === timeString
+    );
+
       times.push(
-        <option key={i} value={timeString}>
-          {timeString}
+        <option key={i} value={timeString} disabled={isUnavailable}>
+          {timeString} {isUnavailable ? "(Unavailable)" : ""}
         </option>
       );
     }
   
-    if (times.length === 0) {
+    if (times.length === 1) {
       times.push(
         <option key="no-slots" value="" disabled>
           No available times for the selected day
@@ -90,6 +112,8 @@ const ReservationInfo = ({ formData, setFormData }) => {
   
     return times;
   };
+  
+  
   
   const months = generateMonths();
   const selectedYear = months.find((m) => m.name === formData.month)?.year || today.getFullYear();
@@ -154,7 +178,6 @@ const ReservationInfo = ({ formData, setFormData }) => {
                           <div className="date-time">
                             <label htmlFor="Time">Time*</label>
                             <select name="time" id="time" value={formData.time} onChange={handleInputChange} className="select">
-                              <option>0:00</option>
                               {generateTimeSlots()}
                             </select>
                           </div>
