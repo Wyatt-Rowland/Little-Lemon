@@ -1,9 +1,9 @@
 import React, {useState} from "react";
+import { generateDaysForMonth, generateMonths, generateTimeSlots } from '../../utilities/dateUtils'
 
-const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailableDates }) => {
+const ReservationInfo = ({ formData, setFormData, availableDates, availableTimesMap, dispatch }) => {
   const today = new Date();
-  const initialMonth = today.toLocaleString("default", { month: "short" });
-  const initialYear = today.getFullYear();
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,111 +14,9 @@ const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailab
   };
 
 
-  const generateMonths = () => {
-    const months = [];
-    const currentMonthIndex = today.getMonth();
-    const currentYear = today.getFullYear();
-
-    for (let i = 0; i < 4; i++) {
-      const monthIndex = (currentMonthIndex + i) % 12;
-      const year = currentYear + Math.floor((currentMonthIndex + i) / 12);
-
-      months.push({
-        name: new Date(year, monthIndex).toLocaleString("default", { month: "short" }),
-        year,
-      });
-    }
-
-    return months;
-  };
-
-  const generateDaysForMonth = (selectedMonth, selectedYear) => {
-    if (!selectedMonth || !selectedYear) {
-      console.warn("Invalid month or year:", { selectedMonth, selectedYear });
-      return [];
-    }
-
-    const currentMonth = today.getMonth();
-    const currentDay = today.getDate();
-
-    const monthIndex = new Date(`${selectedMonth} 1, ${selectedYear}`).getMonth();
-    const isCurrentMonth = monthIndex === currentMonth && selectedYear === today.getFullYear();
-
-    const daysInMonth = new Date(selectedYear, monthIndex + 1, 0).getDate();
-
-    const days = [];
-    for (let day = 1; day <= daysInMonth; day++) {
-      if (isCurrentMonth && day < currentDay) continue;
-      days.push(day);
-    }
-
-    return days;
-  };
-
-  const generateTimeSlots = () => {
-    const times = [];
-    const startHour = 8; // 8:00 AM
-    const endHour = 21; // 9:00 PM
-    
-    const selectedDate = new Date(`${formData.month} ${formData.day}, ${formData.year}`);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Remove time from today
-    
-    const isToday = selectedDate.toDateString() === today.toDateString();
-    const currentTime = new Date();
-
-    const formattedPlaceholderTime = currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
-
-
-    currentTime.setHours(currentTime.getHours() + 3); // Add 3 hours to the current time
-    
-    const currentHour = isToday ? currentTime.getHours() : startHour;
-  
-    // Add a placeholder option
-    times.push(
-      <option key="placeholder" value="" disabled>
-        {formattedPlaceholderTime}
-      </option>
-    );
-  
-    for (let i = currentHour; i <= endHour; i++) {
-      const period = i < 12 ? "AM" : "PM";
-      const hour = i % 12 === 0 ? 12 : i % 12;
-      const timeString = `${hour}:00 ${period}`;
-
-    // Check if this time is unavailable
-    const isUnavailable = unavailableDates.some(
-      (date) =>
-        date.day === formData.day &&
-        date.month === formData.month &&
-        date.year === formData.year &&
-        date.time === timeString
-    );
-
-      times.push(
-        <option key={i} value={timeString} disabled={isUnavailable}>
-          {timeString} {isUnavailable ? "(Unavailable)" : ""}
-        </option>
-      );
-    }
-  
-    if (times.length === 1) {
-      times.push(
-        <option key="no-slots" value="" disabled>
-          No available times for the selected day
-        </option>
-      );
-    }
-  
-    return times;
-  };
-  
-  
   
   const months = generateMonths();
   const selectedYear = months.find((m) => m.name === formData.month)?.year || today.getFullYear();
-
-
     return (
         <div className="reservation-info-grid">
               <div className="form-group">
@@ -136,13 +34,6 @@ const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailab
                         <div className='date-time-container'>
                           <div className="date-time">
                             <label htmlFor="Day">Day</label>
-                            {/* <select name="day" id="day" value={formData.day} onChange={handleInputChange} className="select">
-                              {[...Array(31)].map((_, i) => (
-                                <option key={i + 1} value={i + 1}>
-                                  {i + 1}
-                                </option>
-                              ))}
-                            </select> */}
                             <select
                               name="day"
                               id="day"
@@ -178,7 +69,7 @@ const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailab
                           <div className="date-time">
                             <label htmlFor="Time">Time*</label>
                             <select name="time" id="time" value={formData.time} onChange={handleInputChange} className="select">
-                              {generateTimeSlots()}
+                              {generateTimeSlots(availableTimesMap, formData)}
                             </select>
                           </div>
                         </div>
@@ -211,3 +102,5 @@ const ReservationInfo = ({ formData, setFormData, unavailableDates, setUnavailab
 }
 
 export default ReservationInfo;
+
+
