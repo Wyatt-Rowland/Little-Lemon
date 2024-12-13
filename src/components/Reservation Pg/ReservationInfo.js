@@ -7,10 +7,21 @@ const ReservationInfo = ({ formData, setFormData, availableDates, availableTimes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  
+    // Update the year if the month changes
+    if (name === "month") {
+      const selectedYear = generateMonths().find((month) => month.name === value)?.year || today.getFullYear();
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        year: selectedYear, // Dynamically update the year
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
 

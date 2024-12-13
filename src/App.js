@@ -23,7 +23,7 @@ const availableTimesReducer = (state, action) => {
 
     case "add":
       return [...state, action.payload]; // Add a new date
-    case "remove":
+    case "remove":    
       return state.filter(
         (date) =>
           date.time !== action.payload.time ||
@@ -37,16 +37,13 @@ const availableTimesReducer = (state, action) => {
 };
 
 
-
-
-
 function App() {
   const [availableDates, dispatch] = useReducer(availableTimesReducer, []);
 
   // Initialize the available dates on load
   React.useEffect(() => {
     const allDates = generateAvailability(4); // Generate dates for 4 months
-    const unavailableDates = generateUnavailableDates(allDates, 50); // Mark 50 slots as unavailable
+    const unavailableDates = generateUnavailableDates(allDates, 500); // Mark 50 slots as unavailable
   
     // Filter out unavailable times
     const finalDates = allDates.map((date) => {

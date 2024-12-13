@@ -2,56 +2,77 @@
 
 // Please keep all comments
 
-
-  // Get current time as the placeholder, then check the times map and provide available hours.  used in ReservationInfo.js
- export const generateTimeSlots = (availableTimesMap, formData) => {
-
-    if (!formData || !formData.day || !formData.month || !formData.year) {
-      return [
-        <option key="no-date" value="" disabled>
-          Date
-        </option>,
-      ];
-    }
-    const key = `${formData.day}-${formData.month}-${formData.year}`;
-        console.log("Key for availableTimesMap lookup:", key);
-        console.log("Available Times for Key:", availableTimesMap.get(key));
-    const availableTimes = availableTimesMap.get(key) || [];
-  
-    const currentTime = new Date();
-    const formattedCurrentTime = currentTime.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  
-    // Add the placeholder with the current time
-    const times = [
-      <option key="placeholder" value="" disabled>
-        {formattedCurrentTime}
+export const generateTimeSlots = (availableTimesMap, formData) => {
+  if (!formData || !formData.day || !formData.month || !formData.year) {
+    return [
+      <option key="no-date" value="" disabled>
+        Date
       </option>,
     ];
-  
-    // Render available times for the selected date
+  }
+
+  const key = `${formData.day}-${formData.month}-${formData.year}`;
+  console.log("Key for availableTimesMap lookup:", key);
+  console.log("Available Times for Key:", availableTimesMap.get(key));
+
+  const availableTimes = availableTimesMap.get(key) || [];
+  const currentTime = new Date();
+  const isToday = formData.year === currentTime.getFullYear().toString() &&
+                  formData.month === currentTime.toLocaleString("default", { month: "short" }) &&
+                  parseInt(formData.day) === currentTime.getDate();
+
+  // Filter times if it's today
+  const filteredTimes = isToday
+    ? availableTimes.filter((time) => {
+        const [hour, minutePeriod] = time.split(/:| /);
+        const hour24 = minutePeriod === "PM" && parseInt(hour) !== 12
+          ? parseInt(hour) + 12
+          : parseInt(hour) === 12 && minutePeriod === "AM"
+          ? 0
+          : parseInt(hour);
+
+        const timeDate = new Date();
+        timeDate.setHours(hour24, 0, 0, 0); // Set the time from the slot
+
+        // Check if the time is at least 3 hours ahead of current time
+        return timeDate.getTime() - currentTime.getTime() >= 3 * 60 * 60 * 1000;
+      })
+    : availableTimes;
+
+  const formattedCurrentTime = currentTime.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Add the placeholder with the current time
+  const times = [
+    <option key="placeholder" value="" disabled>
+      {` ${formattedCurrentTime}`}
+    </option>,
+  ];
+
+  // Render available times for the selected date
+  times.push(
+    ...filteredTimes.map((time) => (
+      <option key={time} value={time}>
+        {time}
+      </option>
+    ))
+  );
+
+  // If no available times, show "No available times"
+  if (filteredTimes.length === 0) {
     times.push(
-      ...availableTimes.map((time) => (
-        <option key={time} value={time}>
-          {time}
-        </option>
-      ))
+      <option key="no-slots" value="" disabled>
+        None Available
+      </option>
     );
-  
-    // If no available times, show "No available times"
-    if (availableTimes.length === 0) {
-      times.push(
-        <option key="no-slots" value="" disabled>
-          No available times for the selected day
-        </option>
-      );
-    }
-  
-    return times;
-  };
+  }
+
+  return times;
+};
+
   
 
 // Generate months for months available to reserve. Used in ReservationInfo.js
@@ -70,6 +91,7 @@ export const generateMonths = () => {
         year: year.toString(),
       });
     }
+    console.log("Generated Months:", months); // Debug: Ensure months include 2025
 
     return months;
   };
@@ -104,6 +126,7 @@ export const generateMonths = () => {
 
     days.push(day);
     }
+    console.log("Generated Days for Month:", { selectedMonth, selectedYear, days }); // Debug
 
     return days;
   };
@@ -146,8 +169,10 @@ export const generateMonths = () => {
   
     const months = Array.from({ length: monthsAhead }, (_, i) => {
       const date = new Date(today.getFullYear(), today.getMonth() + i);
-      return { name: date.toLocaleString("default", { month: "short" }), year: date.getFullYear().toString() };
-    });
+      return { 
+        name: date.toLocaleString("default", { month: "short" }), 
+        year: date.getFullYear().toString() 
+      };    });
   
     const allDates = [];
   
@@ -184,36 +209,49 @@ export const generateMonths = () => {
 
   // Used in App.js to generate random times some day that are already booked. 
   export const generateUnavailableDates = (allDates, count) => {
-    const unavailableDates = [];
-    const totalDates = allDates.length;
+    // Flatten all time slots into a single array for accurate randomization
+    const allTimeSlots = allDates.flatMap((date) =>
+      date.times.map((time) => ({
+        ...date,
+        times: [time], // Keep a single time per slot for this flattened structure
+      }))
+    );
   
-    while (unavailableDates.length < count) {
-      const randomIndex = Math.floor(Math.random() * totalDates); // Randomly pick a date
-      const randomDate = allDates[randomIndex];
-      const randomTime = randomDate.times[Math.floor(Math.random() * randomDate.times.length)]; // Randomly pick a time for that date
+    const totalTimeSlots = allTimeSlots.length;
   
-      // Check if the date already exists in the unavailableDates list
-      const existingDate = unavailableDates.find(
-        d => d.day === randomDate.day && d.month === randomDate.month && d.year === randomDate.year
-      );
+    if (count > totalTimeSlots) {
+      console.warn(`Count (${count}) exceeds total available time slots (${totalTimeSlots}). Adjusting to maximum possible.`);
+      count = totalTimeSlots;
+    }
   
-      if (existingDate) {
-        // Add the randomTime if it's not already included
-        if (!existingDate.times.includes(randomTime)) {
-          existingDate.times.push(randomTime);
+    const unavailableSlotsSet = new Set(); // Track unavailable slots
+    const unavailableDatesMap = new Map(); // Group unavailable slots by date
+  
+    while (unavailableSlotsSet.size < count) {
+      const randomIndex = Math.floor(Math.random() * totalTimeSlots); // Randomly pick a time slot
+      const randomSlot = allTimeSlots[randomIndex];
+  
+      const slotKey = `${randomSlot.day}-${randomSlot.month}-${randomSlot.year}-${randomSlot.times[0]}`; // Unique key for this slot
+  
+      if (!unavailableSlotsSet.has(slotKey)) {
+        unavailableSlotsSet.add(slotKey);
+  
+        const dateKey = `${randomSlot.day}-${randomSlot.month}-${randomSlot.year}`;
+        if (!unavailableDatesMap.has(dateKey)) {
+          unavailableDatesMap.set(dateKey, { ...randomSlot, times: [] });
         }
-      } else {
-        // Add a new unavailable date with the randomTime
-        unavailableDates.push({
-          ...randomDate,
-          times: [randomTime], // Initialize with the first unavailable time
-        });
+  
+        // Add the time to the corresponding date's unavailable list
+        unavailableDatesMap.get(dateKey).times.push(randomSlot.times[0]);
       }
     }
   
+    // Convert the map back to an array format
+    const unavailableDates = Array.from(unavailableDatesMap.values());
+  
+    console.log("Optimized Unavailable Dates:", unavailableDates);
     return unavailableDates;
   };
-  
   
   
   

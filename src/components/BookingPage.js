@@ -36,9 +36,22 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
     2: ["cardName", "cardNumber", "expDate", "CVV"], // PaymentInfo
   };
 
-  const totalInputs = Object.keys(formData).filter((key) => !["month", "tableDetails", "day", "year", "occasion", "contactMethod"].includes(key)).length;
-  const completedInputs = Object.keys(formData).filter((key) => formData[key].trim() !== "").length;
-  const progressPercent = Math.min((completedInputs / totalInputs) * 100, 100);
+  // const totalInputs = Object.keys(formData).filter((key) => ![ "tableDetails", "day", "year", "occasion", "contactMethod"].includes(key)).length;
+  // const completedInputs = Object.keys(formData).filter((key) => formData[key].trim() !== "").length;
+  // const progressPercent = Math.min((completedInputs / totalInputs) * 100, 100);
+  
+    // Calculate progress percentage dynamically
+    const calculateProgressPercent = () => {
+      const totalRequiredFields = Object.values(requiredFields).flat();
+      const filledFields = totalRequiredFields.filter(
+        (field) => formData[field] && formData[field].trim() !== ""
+      ).length;
+  
+      return Math.round((filledFields / totalRequiredFields.length) * 100);
+    };
+  
+    const progressPercent = calculateProgressPercent();
+  
 
   const validateCurrentStep = () => {
     const fieldsToValidate = requiredFields[formPage] || [];
@@ -86,6 +99,7 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
   };
 
   const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "!"];
+  console.log(formData)
 
   const renderFormStep = () => {
     switch (formPage) {
