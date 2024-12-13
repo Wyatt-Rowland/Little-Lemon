@@ -36,9 +36,6 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
     2: ["cardName", "cardNumber", "expDate", "CVV"], // PaymentInfo
   };
 
-  // const totalInputs = Object.keys(formData).filter((key) => ![ "tableDetails", "day", "year", "occasion", "contactMethod"].includes(key)).length;
-  // const completedInputs = Object.keys(formData).filter((key) => formData[key].trim() !== "").length;
-  // const progressPercent = Math.min((completedInputs / totalInputs) * 100, 100);
   
     // Calculate progress percentage dynamically
     const calculateProgressPercent = () => {
@@ -80,22 +77,16 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
   const handleFormSubmit = () => {
     const { day, month, year, time } = formData;
 
-    const isAvailable = availableDates.some(
-      (date) =>
-        date.day === day &&
-        date.month === month &&
-        date.year === year &&
-        date.time === time
-    );
+    const key = `${day}-${month}-${year}`;
+    const availableTimes = availableTimesMap.get(key) || [];
 
-    if (!isAvailable) {
+    if (!availableTimes.includes(time)) {
       alert("This date and time are no longer available. Please choose another slot.");
-      return;
+      return false; // Prevent further action
     }
 
     // Remove the selected slot from availableDates
     dispatch({ type: "book", payload: { day, month, year, time } });
-    alert(`You successfully booked ${time} on ${month} ${day}, ${year}`);
   };
 
   const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "!"];

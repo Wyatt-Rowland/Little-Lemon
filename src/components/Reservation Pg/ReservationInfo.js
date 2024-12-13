@@ -26,8 +26,7 @@ const ReservationInfo = ({ formData, setFormData, availableDates, availableTimes
 
 
   
-  const months = generateMonths();
-  const selectedYear = months.find((m) => m.name === formData.month)?.year || today.getFullYear();
+
     return (
         <div className="reservation-info-grid">
               <div className="form-group">
