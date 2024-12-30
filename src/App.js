@@ -13,7 +13,7 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 import Construction from './components/Construction';
 import BookingPage from './components/BookingPage';
-import { generateUnavailableDates, generateAvailability, generateTimeAvailability } from "./utilities/dateUtils"
+import { generateUnavailableDates, generateAvailability, addUnavailableToCache, getUnavailableFromCache, generateTimeAvailability } from "./utilities/dateUtils"
 
 // Reducer for managing available dates
 const availableTimesReducer = (state, action) => {
@@ -36,36 +36,25 @@ const availableTimesReducer = (state, action) => {
   }
 };
 
-
 function App() {
   const [availableDates, dispatch] = useReducer(availableTimesReducer, []);
 
-  // Initialize the available dates on load
+
   React.useEffect(() => {
-    const allDates = generateAvailability(4); // Generate dates for 4 months
-    const unavailableDates = generateUnavailableDates(allDates, 500); // Mark 50 slots as unavailable
-  
-    // Filter out unavailable times
+    const allDates = generateAvailability(4); // Generate availability for 4 months
+
+    // Retrieve unavailable dates from cache and apply them
     const finalDates = allDates.map((date) => {
-      const unavailable = unavailableDates.find(
-        (uDate) =>
-          uDate.day === date.day &&
-          uDate.month === date.month &&
-          uDate.year === date.year
-      );
-  
-      const filteredTimes = unavailable
-        ? date.times.filter((time) => !unavailable.times.includes(time))
-        : date.times;
-  
+      const unavailableTimes = getUnavailableFromCache(date.day, date.month, date.year);
+      const filteredTimes = date.times.filter((time) => !unavailableTimes.includes(time));
       return { ...date, times: filteredTimes };
     });
-  
+
     dispatch({ type: "initialize", payload: finalDates });
   }, []);
 
   React.useEffect(() => {
-    console.log("Available Dates Initialized:", availableDates);
+    // console.log("Available Dates Initialized:", availableDates);
   }, [availableDates]);
 
   const availableTimesMap = React.useMemo(() => {
@@ -74,10 +63,27 @@ function App() {
       const key = `${date.day}-${date.month}-${date.year}`;
       map.set(key, date.times);
     });
-    console.log("AvailableTimesMap:", map);
+    // console.log("AvailableTimesMap:", map);
     return map;
   }, [availableDates]);
+
+  const handleNewReservation = (day, month, year, time) => {
+    // Add the new reservation to the cache
+    addUnavailableToCache(day, month, year, time);
   
+    // Update the availableDates state
+    const updatedDates = availableDates.map((date) => {
+      if (date.day === day && date.month === month && date.year === year) {
+        const updatedTimes = date.times.filter((t) => t !== time);
+        return { ...date, times: updatedTimes }; // Always return a new object
+      }
+      return date;
+    });
+  
+    dispatch({ type: "initialize", payload: [...updatedDates] }); // Ensure a new array
+  };
+  
+
 
 
   return (
@@ -109,5 +115,29 @@ function App() {
 export default App;
 
 
+
+
+  // Initialize the available dates on load
+  // React.useEffect(() => {
+  //   const allDates = generateAvailability(4); // Generate dates for 4 months
+  //   const unavailableDates = generateUnavailableDates(allDates, 500); // Mark 50 slots as unavailable
+    
+  //   // Filter out unavailable times
+  //   const finalDates = allDates.map((date) => {
+  //     const unavailable = unavailableDates.find(
+  //       (uDate) =>
+  //         uDate.day === date.day &&
+  //         uDate.month === date.month &&
+  //         uDate.year === date.year
+  //     );
+  //     const filteredTimes = unavailable
+  //       ? date.times.filter((time) => !unavailable.times.includes(time))
+  //       : date.times;
+  
+  //     return { ...date, times: filteredTimes };
+  //   });
+  
+  //   dispatch({ type: "initialize", payload: finalDates });
+  // }, []);
 
 

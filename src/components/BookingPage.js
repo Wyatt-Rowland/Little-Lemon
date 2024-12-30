@@ -3,6 +3,7 @@ import ReservationInfo from './Reservation Pg/ReservationInfo';
 import PersonalInfo from './Reservation Pg/PersonalInfo';
 import PaymentInfo from './Reservation Pg/PaymentInfo';
 import ReservationSuccessful from './Reservation Pg/ReservationSuccess';
+import { addUnavailableToCache, getUnavailableFromCache } from "../utilities/dateUtils";
 
 const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
   const [formPage, setFormPage] = useState(0);
@@ -31,10 +32,12 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
   });
 
   const requiredFields = {
-    0: ["guests", "day", "month", "time"], // Required fields for ReservationInfo
+    0: ["guests", "time"], // Required fields for ReservationInfo
     1: ["firstName", "lastName", "phoneNumber", "email"], // PersonalInfo
     2: ["cardName", "cardNumber", "expDate", "CVV"], // PaymentInfo
   };
+
+  
 
   
     // Calculate progress percentage dynamically
@@ -76,27 +79,54 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
 
   const handleFormSubmit = () => {
     const { day, month, year, time } = formData;
-
+  
     const key = `${day}-${month}-${year}`;
     const availableTimes = availableTimesMap.get(key) || [];
-
+  
     if (!availableTimes.includes(time)) {
       alert("This date and time are no longer available. Please choose another slot.");
       return false; // Prevent further action
     }
-
+  
+    // Add the selected time to the cache
+    addUnavailableToCache(day, month, year, time);
+  
     // Remove the selected slot from availableDates
     dispatch({ type: "book", payload: { day, month, year, time } });
   };
+
+  const handleNewReservation = (day, month, year, time) => {
+    // Add the new reservation to the cache
+    addUnavailableToCache(day, month, year, time);
+  
+    // Update the availableDates state
+    const updatedDates = availableDates.map((date) => {
+      if (date.day === day && date.month === month && date.year === year) {
+        const updatedTimes = date.times.filter((t) => t !== time);
+        return { ...date, times: updatedTimes }; // Always return a new object
+      }
+      return date;
+    });
+  
+    dispatch({ type: "initialize", payload: [...updatedDates] }); // Ensure a new array
+  };
+  
 
   const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "!"];
   console.log(formData)
 
   const renderFormStep = () => {
+    // Include cached unavailable times in availableTimesMap
+    const updatedAvailableDates = availableDates.map((date) => {
+    const unavailableTimes = getUnavailableFromCache(date.day, date.month, date.year);
+    const filteredTimes = date.times.filter((time) => !unavailableTimes.includes(time));
+    return { ...date, times: filteredTimes };
+    });
     switch (formPage) {
       case 0:
         return <ReservationInfo formData={formData} setFormData={setFormData}                 
           availableDates={availableDates}
+          availableDates={updatedAvailableDates} // Use updated availableDates
           availableTimesMap={availableTimesMap}
           dispatch={dispatch} />;
       case 1:
@@ -106,7 +136,7 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
       case 3:
         return <ReservationSuccessful formData={formData} />;
       default:
-        return <ReservationInfo formData={formData} setFormData={setFormData} availableDates={availableDates} />;
+        return <ReservationInfo formData={formData}  setFormData={setFormData} availableDates={updatedAvailableDates} />;
     }
   };
 
@@ -118,6 +148,7 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
                 <div class="dashboard">
                     <div
                       className="circle"
+                      role="progressbar"
                       style={{
                         backgroundImage:
                           formPage === formTitles.length - 1

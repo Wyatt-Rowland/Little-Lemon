@@ -1,73 +1,109 @@
-# Little-Lemon
-Little Lemon site for Meta Front-End Developer Professional Course
+# Little Lemon
 
-# Getting Started with Create React App
+Welcome to Little Lemon, a capstone project for Meta's Front-end Developer Course hosted on Coursera. This project demonstrates front-end development concepts using React and includes a dynamic table reservation form.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Live Preview
 
-## Available Scripts
+You can view the project live at: [Little Lemon - Live Demo](https://vaccinaldig3710.github.io/Little-Lemon/)
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+Little Lemon is a responsive web application for reserving tables at a restaurant. The application includes the following features:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A user-friendly table reservation form.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Randomly generated unavailable times, stored locally to simulate dynamic availability.
 
-### `npm test`
+Local caching of new dates and times to enhance performance and simulate database functionality.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Designed with React, ensuring reusable components and a modular structure.
 
-### `npm run build`
+Styled with responsive design principles for optimal viewing on various devices.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Dynamic Time Availability:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Random times are marked as unavailable.
 
-### `npm run eject`
+    Newly reserved dates are stored locally to simulate a persistent cache.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Interactive Form:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    Easy-to-use form for reserving tables.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    Validates user input to ensure proper functionality.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### State Management:
 
-## Learn More
+    React's state management ensures seamless interactions and updates.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Local Storage Integration:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    Cached unavailable times and reservations are stored in the browser’s local storage.
 
-### Code Splitting
+### Responsive Design:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    Adaptable layouts for desktop, tablet, and mobile screens.
 
-### Analyzing the Bundle Size
+## Technologies Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    React: Component-based architecture for efficient development.
 
-### Making a Progressive Web App
+    HTML5 & CSS3: Semantics and responsive design.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    JavaScript (ES6): Dynamic behavior and form handling.
 
-### Advanced Configuration
+    Local Storage: Simulates backend functionality for caching reservations.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    GitHub Pages: Hosts the live demo.
 
-### Deployment
+## Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To run the project locally:
 
-### `npm run build` fails to minify
+Clone the repository:
+    git clone https://github.com/vaccinaldig3710/Little-Lemon.git
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Navigate to the project directory:
+    cd Little-Lemon
+
+Install dependencies:
+    npm install
+
+Start the development server:
+    npm start
+
+Open your browser and navigate to: 
+    http://localhost:3000
+
+
+## Usage
+
+Access the reservation form on the homepage.
+
+Select a date, time, and number of guests.
+
+Submit the form to reserve a table.
+
+View unavailable times dynamically updated and stored locally.
+
+## Possible Improvements
+
+Backend Integration: Connect to a real-time database to persist reservations.
+
+Authentication: Add user accounts and login functionality.
+
+Enhanced UI/UX: Include animations and advanced styling for better user experience.
+
+Unit Testing: Ensure reliability by adding test cases using Jest or React Testing Library.
+
+## Author
+
+This project was created by Wyatt Rowland as a capstone for Meta's Front-end Developer Course.
+
+## License
+
+This project is licensed under the MIT License. Feel free to use and modify it as per your needs.
+
+Thank you for exploring Little Lemon! If you have feedback or suggestions, feel free to reach out.

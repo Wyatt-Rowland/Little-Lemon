@@ -2,7 +2,57 @@
 
 // Please keep all comments
 
+
+// Key for local storage
+const CACHE_KEY = "reservation_cache";
+
+// Get cache from local storage
+export const getCache = () => {
+  const cache = localStorage.getItem(CACHE_KEY);
+  return cache ? JSON.parse(cache) : {};
+};
+
+// Save cache to local storage
+export const saveCache = (cache) => {
+  localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+};
+
+// Add unavailable times to the cache
+export const addUnavailableToCache = (day, month, year, time) => {
+  const cache = getCache();
+  const key = `${day}-${month}-${year}`;
+
+  if (!cache[key]) {
+    cache[key] = [];
+  }
+
+  if (!cache[key].includes(time)) {
+    cache[key].push(time);
+  }
+
+  saveCache(cache);
+};
+
+// Get unavailable times from the cache for a specific date
+export const getUnavailableFromCache = (day, month, year) => {
+  const cache = getCache();
+  const key = `${day}-${month}-${year}`;
+  return cache[key] || [];
+};
+
+
+
 export const generateTimeSlots = (availableTimesMap, formData) => {
+
+    // Ensure availableTimesMap is defined and valid
+    if (!availableTimesMap || typeof availableTimesMap.get !== 'function') {
+      console.warn("availableTimesMap is not initialized or invalid.");
+      return [
+        <option key="loading" value="" disabled>
+          Loading...
+        </option>,
+      ];
+    }
   if (!formData || !formData.day || !formData.month || !formData.year) {
     return [
       <option key="no-date" value="" disabled>
@@ -12,10 +62,13 @@ export const generateTimeSlots = (availableTimesMap, formData) => {
   }
 
   const key = `${formData.day}-${formData.month}-${formData.year}`;
-  console.log("Key for availableTimesMap lookup:", key);
-  console.log("Available Times for Key:", availableTimesMap.get(key));
+  // console.log("Key for availableTimesMap lookup:", key);
 
   const availableTimes = availableTimesMap.get(key) || [];
+
+  // console.log("Available Times for Key:", availableTimesMap.get(key));
+
+
   const currentTime = new Date();
   const isToday = formData.year === currentTime.getFullYear().toString() &&
                   formData.month === currentTime.toLocaleString("default", { month: "short" }) &&
@@ -23,21 +76,28 @@ export const generateTimeSlots = (availableTimesMap, formData) => {
 
   // Filter times if it's today
   const filteredTimes = isToday
-    ? availableTimes.filter((time) => {
-        const [hour, minutePeriod] = time.split(/:| /);
-        const hour24 = minutePeriod === "PM" && parseInt(hour) !== 12
-          ? parseInt(hour) + 12
-          : parseInt(hour) === 12 && minutePeriod === "AM"
-          ? 0
-          : parseInt(hour);
+  ? availableTimes.filter((time) => {
+      const [hour, minutePeriod] = time.split(/:| /);
+      let hour24;
 
-        const timeDate = new Date();
-        timeDate.setHours(hour24, 0, 0, 0); // Set the time from the slot
+      // Fix the 12-hour to 24-hour conversion
+      if (minutePeriod === "AM") {
+        hour24 = parseInt(hour) === 12 ? 0 : parseInt(hour);
+      } else {
+        hour24 = parseInt(hour) === 12 ? 12 : parseInt(hour) + 12;
+      }
 
-        // Check if the time is at least 3 hours ahead of current time
-        return timeDate.getTime() - currentTime.getTime() >= 3 * 60 * 60 * 1000;
-      })
-    : availableTimes;
+      const timeDate = new Date();
+      timeDate.setHours(hour24, 0, 0, 0); // Set hours and reset minutes, seconds, ms
+
+      // console.log("Current Time:", currentTime);
+      // console.log("Checking Time Slot:", timeDate);
+      // console.log("Time Difference (ms):", timeDate.getTime() - currentTime.getTime());
+
+      // Filter slots at least 3 hours ahead
+      return timeDate.getTime() - currentTime.getTime() >= 3 * 60 * 60 * 1000;
+    })
+  : availableTimes;
 
   const formattedCurrentTime = currentTime.toLocaleTimeString([], {
     hour: "2-digit",
@@ -75,6 +135,36 @@ export const generateTimeSlots = (availableTimesMap, formData) => {
 
   
 
+  // Used in App.js to generate times that could be available.
+
+  export const generateTimeAvailability = (startTime, endTime, isToday = false) => {
+    const times = [];
+    const currentTime = new Date();
+  
+    for (let hour = startTime; hour <= endTime; hour++) {
+      const period = hour < 12 ? "AM" : "PM";
+      const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+  
+      // If it's today, filter out past times
+      if (isToday) {
+        const currentHour = currentTime.getHours();
+        const isFutureHour = hour > currentHour + 2;
+  
+        if (isFutureHour) {
+          times.push(`${formattedHour}:00 ${period}`);
+        } else if (hour === currentHour) {
+          const currentMinutes = currentTime.getMinutes();
+          times.push(`${formattedHour}:${currentMinutes < 30 ? "30" : "00"} ${period}`);
+        }
+      } else {
+        // For future dates, include all time slots
+        times.push(`${formattedHour}:00 ${period}`);
+      }
+    }
+  
+    return times;
+  };
+
 // Generate months for months available to reserve. Used in ReservationInfo.js
 export const generateMonths = () => {
     const today = new Date();
@@ -91,7 +181,7 @@ export const generateMonths = () => {
         year: year.toString(),
       });
     }
-    console.log("Generated Months:", months); // Debug: Ensure months include 2025
+    // console.log("Generated Months:", months); // Debug: Ensure months include 2025
 
     return months;
   };
@@ -126,42 +216,12 @@ export const generateMonths = () => {
 
     days.push(day);
     }
-    console.log("Generated Days for Month:", { selectedMonth, selectedYear, days }); // Debug
+    // console.log("Generated Days for Month:", { selectedMonth, selectedYear, days }); // Debug
 
     return days;
   };
   
   
-
-  // Used in App.js to generate times that could be available.
-
-  export const generateTimeAvailability = (startTime, endTime, isToday = false) => {
-    const times = [];
-    const currentTime = new Date();
-  
-    for (let hour = startTime; hour <= endTime; hour++) {
-      const period = hour < 12 ? "AM" : "PM";
-      const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-  
-      // If it's today, filter out past times
-      if (isToday) {
-        const currentHour = currentTime.getHours();
-        const isFutureHour = hour > currentHour;
-  
-        if (isFutureHour) {
-          times.push(`${formattedHour}:00 ${period}`);
-        } else if (hour === currentHour) {
-          const currentMinutes = currentTime.getMinutes();
-          times.push(`${formattedHour}:${currentMinutes < 30 ? "30" : "00"} ${period}`);
-        }
-      } else {
-        // For future dates, include all time slots
-        times.push(`${formattedHour}:00 ${period}`);
-      }
-    }
-  
-    return times;
-  };
   // Used in App.js to generate days that could be available. 
  export const generateAvailability = (monthsAhead) => {
     const today = new Date();
@@ -192,18 +252,27 @@ export const generateMonths = () => {
           today.getDate() === day &&
           today.toLocaleString("default", { month: "short" }) === month &&
           today.getFullYear().toString() === year;
-  
-        allDates.push({
-          day: day.toString(),
-          month,
-          year,
-          times: generateTimeAvailability(8, 21, isToday), // Pass isToday flag
-        });
-      }
-    });
-  
-    return allDates;
-  };
+
+
+      // Get unavailable times from cache
+      const unavailableTimes = getUnavailableFromCache(day.toString(), month, year);
+
+      const availableTimes = [
+        ...generateTimeAvailability(10, 12, isToday), // Morning times
+        ...generateTimeAvailability(16, 21, isToday), // Evening times
+      ].filter((time) => !unavailableTimes.includes(time)); // Exclude cached unavailable times
+
+      allDates.push({
+        day: day.toString(),
+        month,
+        year,
+        times: availableTimes,
+      });
+    }
+  });
+
+  return allDates;
+};
   
   
 
@@ -249,9 +318,42 @@ export const generateMonths = () => {
     // Convert the map back to an array format
     const unavailableDates = Array.from(unavailableDatesMap.values());
   
-    console.log("Optimized Unavailable Dates:", unavailableDates);
+    // console.log("Optimized Unavailable Dates:", unavailableDates);
     return unavailableDates;
   };
   
   
+
+
   
+  
+
+
+  
+// This is for a fake API. Querying https://raw.githubusercontent.com/courseraap/capstone/main/api.js was just returning an undefined function. 
+// const seededRandom = function (seed) {
+//   var m = 2**35 - 31;
+//   var a = 185852;
+//   var s = seed % m;
+//   return function () {
+//       return (s = s * a % m) / m;
+//   };
+// }
+
+// export const fetchAPI = function(date) {
+//   let result = [];
+//   let random = seededRandom(date.getDate());
+
+//   for(let i = 11; i <= 23; i++) {
+//       if(random() < 0.5) {
+//           result.push(i + ':00');
+//       }
+//       if(random() < 0.5) {
+//           result.push(i + ':30');
+//       }
+//   }
+//   return result;
+// };
+// export const submitAPI = function(formData) {
+//   return true;
+// };
