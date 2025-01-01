@@ -42,10 +42,19 @@ function App() {
 
   React.useEffect(() => {
     const allDates = generateAvailability(4); // Generate availability for 4 months
+    const generatedUnavailableDates = generateUnavailableDates(allDates, 50); // Generate 50 unavailable slots
+
+    // Store the generated unavailable dates in the cache
+    generatedUnavailableDates.forEach((date) => {
+      date.times.forEach((time) => {
+        addUnavailableToCache(date.day, date.month, date.year, time);
+      });
+    });
 
     // Retrieve unavailable dates from cache and apply them
     const finalDates = allDates.map((date) => {
       const unavailableTimes = getUnavailableFromCache(date.day, date.month, date.year);
+      // console.log(unavailableTimes, date.day, date.month)
       const filteredTimes = date.times.filter((time) => !unavailableTimes.includes(time));
       return { ...date, times: filteredTimes };
     });
@@ -67,22 +76,7 @@ function App() {
     return map;
   }, [availableDates]);
 
-  const handleNewReservation = (day, month, year, time) => {
-    // Add the new reservation to the cache
-    addUnavailableToCache(day, month, year, time);
-  
-    // Update the availableDates state
-    const updatedDates = availableDates.map((date) => {
-      if (date.day === day && date.month === month && date.year === year) {
-        const updatedTimes = date.times.filter((t) => t !== time);
-        return { ...date, times: updatedTimes }; // Always return a new object
-      }
-      return date;
-    });
-  
-    dispatch({ type: "initialize", payload: [...updatedDates] }); // Ensure a new array
-  };
-  
+
 
 
 

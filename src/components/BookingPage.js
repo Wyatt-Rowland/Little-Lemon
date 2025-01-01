@@ -77,24 +77,6 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
     setFormPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
-  const handleFormSubmit = () => {
-    const { day, month, year, time } = formData;
-  
-    const key = `${day}-${month}-${year}`;
-    const availableTimes = availableTimesMap.get(key) || [];
-  
-    if (!availableTimes.includes(time)) {
-      alert("This date and time are no longer available. Please choose another slot.");
-      return false; // Prevent further action
-    }
-  
-    // Add the selected time to the cache
-    addUnavailableToCache(day, month, year, time);
-  
-    // Remove the selected slot from availableDates
-    dispatch({ type: "book", payload: { day, month, year, time } });
-  };
-
   const handleNewReservation = (day, month, year, time) => {
     // Add the new reservation to the cache
     addUnavailableToCache(day, month, year, time);
@@ -110,10 +92,34 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
   
     dispatch({ type: "initialize", payload: [...updatedDates] }); // Ensure a new array
   };
+
+  const handleFormSubmit = () => {
+    const { day, month, year, time } = formData;
+  
+    const key = `${day}-${month}-${year}`;
+    const availableTimes = availableTimesMap.get(key) || [];
+  
+    if (!availableTimes.includes(time)) {
+      alert("This date and time are no longer available. Please choose another slot.");
+      return false; // Prevent further action
+    }
+  
+    // Add the selected time to the cache
+    addUnavailableToCache(day, month, year, time);
+
+    // Update the availableDates state by calling handleNewReservation
+    handleNewReservation(day, month, year, time);
+
+  
+    // Remove the selected slot from availableDates
+    dispatch({ type: "book", payload: { day, month, year, time } });
+  };
+
+
   
 
   const formTitles = ["Reservation Information", "Personal Information", "Payment Information", "!"];
-  console.log(formData)
+  // console.log(formData)
 
   const renderFormStep = () => {
     // Include cached unavailable times in availableTimesMap
@@ -145,7 +151,7 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
         <div className="reservation-container">
             <div className="reservation-form">
                 <h3>Form Progress</h3>
-                <div class="dashboard">
+                <div className="dashboard">
                     <div
                       className="circle"
                       role="progressbar"
