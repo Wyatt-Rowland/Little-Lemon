@@ -1,4 +1,4 @@
-import { generateTimeSlots, generateMonths, generateAvailability, generateDaysForMonth, generateTimeAvailability, generateUnavailableDates } from '../../utilities/dateUtils';
+import { generateTimeSlots, generateMonths, generateAvailability, generateDaysForMonth, generateTimeAvailability, generateUnavailableDates, addUnavailableToCache, getCache } from '../../utilities/dateUtils';
 
 
 // test for time slot utility
@@ -125,5 +125,55 @@ describe('generateUnavailableDates', () => {
 
 
 
+// tests for cache
+// Mock localStorage for testing
+const mockLocalStorage = (() => {
+  let store = {};
+
+  return {
+    getItem: (key) => store[key] || null,
+    setItem: (key, value) => {
+      store[key] = value.toString();
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+})();
 
 
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
+describe('addUnavailableToCache', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  test('adds a new unavailable time to the cache', () => {
+    // Add a time to the cache
+    addUnavailableToCache('1', 'Jan', '2025', '10:00 AM');
+
+    const cache = getCache();
+    expect(cache['1-Jan-2025']).toEqual(['10:00 AM']);
+  });
+
+  test('appends a new time to an existing date in the cache', () => {
+    // Prepopulate the cache
+    addUnavailableToCache('1', 'Jan', '2025', '10:00 AM');
+
+    // Add another time to the same date
+    addUnavailableToCache('1', 'Jan', '2025', '11:00 AM');
+
+    const cache = getCache();
+    expect(cache['1-Jan-2025']).toEqual(['10:00 AM', '11:00 AM']);
+  });
+
+  test('does not duplicate times for the same date in the cache', () => {
+    // Add the same time multiple times
+    addUnavailableToCache('1', 'Jan', '2025', '10:00 AM');
+    addUnavailableToCache('1', 'Jan', '2025', '10:00 AM');
+
+    const cache = getCache();
+    expect(cache['1-Jan-2025']).toEqual(['10:00 AM']);
+  });
+});
