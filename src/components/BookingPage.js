@@ -131,7 +131,6 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
     switch (formPage) {
       case 0:
         return <ReservationInfo formData={formData} setFormData={setFormData}                 
-          availableDates={availableDates}
           availableDates={updatedAvailableDates} // Use updated availableDates
           availableTimesMap={availableTimesMap}
           dispatch={dispatch} />;

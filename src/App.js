@@ -13,7 +13,7 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 import Construction from './components/Construction';
 import BookingPage from './components/BookingPage';
-import { generateUnavailableDates, generateAvailability, addUnavailableToCache, getUnavailableFromCache, generateTimeAvailability } from "./utilities/dateUtils"
+import { generateUnavailableDates, generateAvailability, addUnavailableToCache, getUnavailableFromCache, countUnavailableSlots, generateTimeAvailability } from "./utilities/dateUtils"
 
 // Reducer for managing available dates
 const availableTimesReducer = (state, action) => {
@@ -42,23 +42,31 @@ function App() {
 
   React.useEffect(() => {
     const allDates = generateAvailability(4); // Generate availability for 4 months
-    const generatedUnavailableDates = generateUnavailableDates(allDates, 50); // Generate 50 unavailable slots
-
-    // Store the generated unavailable dates in the cache
-    generatedUnavailableDates.forEach((date) => {
-      date.times.forEach((time) => {
-        addUnavailableToCache(date.day, date.month, date.year, time);
+  
+    // Check how many slots are already unavailable in the cache
+    const currentUnavailableCount = countUnavailableSlots();
+    const targetUnavailableCount = 50;
+    const slotsToAdd = targetUnavailableCount - currentUnavailableCount;
+  
+    if (slotsToAdd > 0) {
+      // Generate only the additional unavailable dates needed
+      const generatedUnavailableDates = generateUnavailableDates(allDates, slotsToAdd);
+  
+      // Add the generated unavailable dates to the cache
+      generatedUnavailableDates.forEach((date) => {
+        date.times.forEach((time) => {
+          addUnavailableToCache(date.day, date.month, date.year, time);
+        });
       });
-    });
-
+    }
+  
     // Retrieve unavailable dates from cache and apply them
     const finalDates = allDates.map((date) => {
       const unavailableTimes = getUnavailableFromCache(date.day, date.month, date.year);
-      // console.log(unavailableTimes, date.day, date.month)
       const filteredTimes = date.times.filter((time) => !unavailableTimes.includes(time));
       return { ...date, times: filteredTimes };
     });
-
+  
     dispatch({ type: "initialize", payload: finalDates });
   }, []);
 
