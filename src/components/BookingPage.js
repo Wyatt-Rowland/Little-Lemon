@@ -123,7 +123,7 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
 
   const renderFormStep = () => {
     // Include cached unavailable times in availableTimesMap
-    const updatedAvailableDates = availableDates.map((date) => {
+    const updatedAvailableDates = (availableDates || []).map((date) => { //Added [] to make sure that I don't get an error for availableDates being undefined
     const unavailableTimes = getUnavailableFromCache(date.day, date.month, date.year);
     const filteredTimes = date.times.filter((time) => !unavailableTimes.includes(time));
     return { ...date, times: filteredTimes };
