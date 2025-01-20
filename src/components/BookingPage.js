@@ -53,9 +53,82 @@ const BookingPage = ({ availableDates, dispatch, availableTimesMap }) => {
     const progressPercent = calculateProgressPercent();
   
 
+    // Helper to validate phone number
+const isValidPhoneNumber = (phone) => {
+  // Allow digits, (), spaces, and one +
+  const cleanedPhone = phone.replace(/[^0-9+]/g, ""); // Remove invalid characters
+  const digitCount = cleanedPhone.replace(/\D/g, "").length; // Count digits
+  
+  return (
+    digitCount === 10 || digitCount === 11 || digitCount === 12
+  ) && /^[+]?[\d\s()\-]*$/.test(phone); // Check valid characters and optional +
+};
+
+
   const validateCurrentStep = () => {
     const fieldsToValidate = requiredFields[formPage] || [];
-    return fieldsToValidate.every((field) => formData[field].trim() !== "");
+
+    // Check if fields are filled
+    const areFieldsValid = fieldsToValidate.every(
+      (field) => formData[field] && formData[field].trim() !== ""
+    );
+
+    if (!areFieldsValid) {
+      alert("Please fill in all required fields.");
+      return false;
+    }
+
+    // Page specific validations
+    switch (formPage) {
+      case 0: // Reservation Info
+        const isGuestNumberValid = 
+            formData.guests && 
+            !isNaN(formData.guests) &&
+            parseInt(formData.guests) > 0;
+
+        if (!isGuestNumberValid) {
+          alert("Please enter a valid guest number.")
+          return false;
+        }
+        if (!formData.time) {
+          alert("Please select a valid time.")
+          return false;
+        }
+        break;
+      case 1: // Personal Info
+        const isPhoneValid = isValidPhoneNumber(formData.phoneNumber);
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+
+        if (!isPhoneValid) {
+          alert("Please enter a valid phone number.");
+          return false;
+        }
+  
+        if (!isEmailValid) {
+          alert("Please enter a valid email address.");
+          return false;
+        }
+
+        if (
+          !formData.firstName.trim() ||
+          !formData.lastName.trim()
+        ) {
+          alert("Please provide your first and last name.");
+          return false;
+        }
+        break;
+      case 2: // Payment Info
+        const isCardNumberValid = /^\d{16}$/.test(formData.cardNumber);
+        const isExpDateValid = /^\d{2}\/\d{2}$/.test(formData.expDate); // MM/YY format
+        const isCVVValid = /^\d{3}$/.test(formData.CVV);
+
+        if (!isCVVValid || !isCardNumberValid || !isExpDateValid) {
+          alert("Please enter a valid card.")
+          return false;
+        }
+        break;
+    }
+    return true; // All Validations passed
   };
 
   const handleNext = () => {
