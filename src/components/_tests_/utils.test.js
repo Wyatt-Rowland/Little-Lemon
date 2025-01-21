@@ -1,43 +1,6 @@
 import { generateTimeSlots, generateMonths, generateAvailability, generateDaysForMonth, generateTimeAvailability, generateUnavailableDates, addUnavailableToCache, getCache } from '../../utilities/dateUtils';
 
 
-// test for time slot utility
-describe('generateTimeSlots', () => {
-  const availableTimesMap = new Map();
-  const formData = { day: '1', month: 'Mar', year: '2025' };
-
-  beforeEach(() => {
-    availableTimesMap.set('1-Mar-2025', ['8:00 AM', '11:00 AM', '2:00 PM']);
-  });
-
-  test('returns placeholder when formData is incomplete', () => {
-    const result = generateTimeSlots(availableTimesMap, {});
-    expect(result[0].props.children).toBe('Date');
-  });
-
-  test('returns available times for a future date', () => {
-    const result = generateTimeSlots(availableTimesMap, formData);
-    expect(result.map((option) => option.props.value)).toEqual([
-      '',
-      '8:00 AM',
-      '11:00 AM',
-      '2:00 PM',
-    ]);
-  });
-
-  test('returns no available times for today if none are available', () => {
-    const today = new Date();
-    const formDataToday = {
-      day: today.getDate().toString(),
-      month: today.toLocaleString('default', { month: 'short' }),
-      year: today.getFullYear().toString(),
-    };
-    const emptyMap = new Map();
-    const result = generateTimeSlots(emptyMap, formDataToday);
-    expect(result[result.length - 1].props.children).toBe('None Available');
-  });
-});
-
 
 // tests for generate months utility
 describe('generateMonths', () => {
@@ -100,6 +63,43 @@ describe('generateTimeAvailability', () => {
     );
 
     expect(result).toEqual(expectedTimes);
+  });
+});
+
+// test for time slot utility
+describe('generateTimeSlots', () => {
+  const availableTimesMap = new Map();
+  const formData = { day: '1', month: 'Mar', year: '2025' };
+
+  beforeEach(() => {
+    availableTimesMap.set('1-Mar-2025', ['8:00 AM', '11:00 AM', '2:00 PM']);
+  });
+
+  test('returns placeholder when formData is incomplete', () => {
+    const result = generateTimeSlots(availableTimesMap, {});
+    expect(result[0].props.children).toBe('Date');
+  });
+
+  test('returns available times for a future date', () => {
+    const result = generateTimeSlots(availableTimesMap, formData);
+    expect(result.map((option) => option.props.value)).toEqual([
+      '',
+      '8:00 AM',
+      '11:00 AM',
+      '2:00 PM',
+    ]);
+  });
+
+  test('returns no available times for today if none are available', () => {
+    const today = new Date();
+    const formDataToday = {
+      day: today.getDate().toString(),
+      month: today.toLocaleString('default', { month: 'short' }),
+      year: today.getFullYear().toString(),
+    };
+    const emptyMap = new Map();
+    const result = generateTimeSlots(emptyMap, formDataToday);
+    expect(result[result.length - 1].props.children).toBe('None Available');
   });
 });
 

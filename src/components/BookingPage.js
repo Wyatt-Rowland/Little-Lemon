@@ -128,11 +128,14 @@ const validateCurrentStep = () => {
 
   const handleNext = () => {
     if (formPage === formTitles.length - 2) {
-      if (progressPercent === 100 && validateCurrentStep()) {
-        handleFormSubmit();
-        setFormPage((prevPage) => prevPage + 1);
-      } else {
-        alert("Please fill in all required fields before proceeding.");
+      // On the second-to-last page, validate and submit the form
+      if (validateCurrentStep()) {
+          if (progressPercent === 100) {
+              handleFormSubmit();
+              setFormPage((prevPage) => prevPage + 1); // Proceed to success page
+          } else {
+              alert("Please fill in all required fields before submitting.");
+          }
       }
     } else if (validateCurrentStep()) {
       setFormPage((prevPage) => prevPage + 1);
