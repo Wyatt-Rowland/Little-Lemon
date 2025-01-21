@@ -1,11 +1,20 @@
 import React, {useState} from "react";
 
-const PaymentInfo = ({ formData, setFormData }) => {
+const PaymentInfo = ({ formData, setFormData, formErrors }) => {
     const [formPage, setFormPage] = useState();
 
     
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+
+        if (name === "cardNumber") {
+          // Remove non-numeric characters and add spaces every 4 digits
+          let formattedValue = value.replace(/[^\d]/g, ""); // Remove non-numeric characters
+          formattedValue = formattedValue.match(/.{1,4}/g)?.join(" ") || formattedValue; // Add spaces every 4 digits
+          if (formattedValue.length > 19) formattedValue = formattedValue.slice(0, 19); // Limit to 19 characters (16 digits + 3 spaces)
+          setFormData((prev) => ({ ...prev, [name]: formattedValue }));
+          return;
+        }
 
         // Mask for expiration date (MM/YY)
         if (name === "expDate") {
@@ -33,6 +42,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
             type="text"
             id="cardName"
             name="cardName"
+            className={formErrors.cardName ? "input-error" : ""}
             value={formData.cardName || ""}
             onChange={handleInputChange}
             placeholder="Name on Card"
@@ -46,6 +56,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
             type="text"
             id="cardNumber"
             name="cardNumber"
+            className={formErrors.cardNumber ? "input-error" : ""}
             value={formData.cardNumber || ""}
             onChange={handleInputChange}
             placeholder="1234 5678 9012 3456"
@@ -61,6 +72,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
             type="text"
             id="expDate"
             name="expDate"
+            className={formErrors.expDate ? "input-error" : ""}
             value={formData.expDate || ""}
             onChange={handleInputChange}
             placeholder="MM/YY"
@@ -78,6 +90,7 @@ const PaymentInfo = ({ formData, setFormData }) => {
             id="CVV"
             name="CVV"
             value={formData.CVV || ""}
+            className={formErrors.CVV ? "input-error" : ""}
             onChange={handleInputChange}
             placeholder="XXX"
             maxLength="4" // Some cards like AmEx have 4 digits

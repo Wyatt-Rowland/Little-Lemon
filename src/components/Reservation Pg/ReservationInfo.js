@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { generateDaysForMonth, generateMonths, generateTimeSlots } from '../../utilities/dateUtils'
 
-const ReservationInfo = ({ formData, setFormData, availableDates, availableTimesMap, dispatch }) => {
+const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, availableTimesMap, dispatch }) => {
   const today = new Date();
 
 
@@ -25,13 +25,17 @@ const ReservationInfo = ({ formData, setFormData, availableDates, availableTimes
   };
 
 
-  
-
     return (
         <div className="reservation-info-grid">
               <div className="form-group">
                 <label htmlFor="Guest Number">Guest Number*</label>
-                <select name="guests" id="guests" value={formData.guests} onChange={handleInputChange} className="select">
+                <select 
+                  name="guests" 
+                  id="guests" 
+                  value={formData.guests} 
+                  onChange={handleInputChange} 
+                  className={`select ${formErrors.guests ? "input-error" : ""}`}
+                >
                   <option>0</option>
                 {[...Array(15)].map((_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -78,7 +82,7 @@ const ReservationInfo = ({ formData, setFormData, availableDates, availableTimes
                           </div>
                           <div className="date-time">
                             <label htmlFor="Time">Time*</label>
-                            <select name="time" id="time" value={formData.time} onChange={handleInputChange} className="select">
+                            <select name="time" id="time" value={formData.time} onChange={handleInputChange} className={`select ${formErrors.time ? "input-error" : ""}`}>
                               {generateTimeSlots(availableTimesMap, formData)}
                             </select>
                           </div>

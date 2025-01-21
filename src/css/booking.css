@@ -23,6 +23,19 @@
   gap: 0.5rem;
 }
 
+.input-error {
+  border: 2px solid red;
+}
+
+.text-error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+select.input-error {
+  border: 2px solid red;
+}
 
  label {
     display: block;

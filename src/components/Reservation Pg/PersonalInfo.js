@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PersonalInfo = ({ formData, setFormData }) => {
+const PersonalInfo = ({ formData, setFormData, formErrors }) => {
 
     // Helper to format phone number
     const formatPhoneNumber = (phone) => {
@@ -41,11 +41,14 @@ const PersonalInfo = ({ formData, setFormData }) => {
   return (
     <div className="personal-info-grid">
       <div className="form-group">
-        <label htmlFor="firstName">First Name*</label>
-        <input
+      <label htmlFor="firstName">
+        First Name*
+      </label> 
+       <input
           type="text"
           id="firstName"
           name="firstName"
+          className={formErrors.firstName ? "input-error" : ""}
           value={formData.firstName}
           onChange={handleInputChange}
           placeholder="Enter your first name"
@@ -60,6 +63,7 @@ const PersonalInfo = ({ formData, setFormData }) => {
           name="lastName"
           value={formData.lastName}
           onChange={handleInputChange}
+          className={formErrors.lastName ? "input-error" : ""}
           placeholder="Enter your last name"
           required
         />
@@ -72,6 +76,7 @@ const PersonalInfo = ({ formData, setFormData }) => {
           id="phoneNumber"
           name="phoneNumber"
           value={formData.phoneNumber}
+          className={formErrors.phoneNumber ? "input-error" : ""}
           onChange={handleInputChange}
           placeholder="+1 (111) 222 3333"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -86,6 +91,7 @@ const PersonalInfo = ({ formData, setFormData }) => {
           id="email"
           name="email"
           value={formData.email}
+          className={formErrors.email ? "input-error" : ""}
           onChange={handleInputChange}
           placeholder="Enter your email"
           required
