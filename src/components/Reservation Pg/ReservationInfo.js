@@ -28,7 +28,7 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
     return (
         <div className="reservation-info-grid">
               <div className="form-group">
-                <label htmlFor="Guest Number">Guest Number*</label>
+                <label htmlFor="guests">Guest Number*</label>
                 <select 
                   name="guests" 
                   id="guests" 
@@ -81,7 +81,7 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
                             
                           </div>
                           <div className="date-time">
-                            <label htmlFor="Time">Time*</label>
+                            <label htmlFor="time">Time*</label>
                             <select name="time" id="time" value={formData.time} onChange={handleInputChange} className={`select ${formErrors.time ? "input-error" : ""}`}>
                               {generateTimeSlots(availableTimesMap, formData)}
                             </select>

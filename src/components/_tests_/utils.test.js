@@ -58,7 +58,7 @@ describe('generateTimeAvailability', () => {
     const currentHour = currentTime.getHours();
 
     const result = generateTimeAvailability(8, 10, true);
-    const expectedTimes = ['11:00 AM', '11:30 PM'].filter(
+    const expectedTimes = ['10:00 AM'].filter(
       (time) => parseInt(time) > currentHour
     );
 
@@ -106,6 +106,15 @@ describe('generateTimeSlots', () => {
 
 // tests for unavailable dates
 describe('generateUnavailableDates', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2025-01-01T09:30:00Z')); // Set mocked time to 9:30 AM UTC
+  });
+
+  afterEach(() => {
+    jest.useRealTimers(); // Restore real timers after each test
+  });
+
   test('generates random unavailable slots without exceeding count', () => {
     const allDates = generateAvailability(1); // 1 month of availability
     const unavailableDates = generateUnavailableDates(allDates, 5);

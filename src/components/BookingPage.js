@@ -274,6 +274,7 @@ const validateCurrentStep = () => {
                           Back
                         </button>
                         <button
+                           name="next"
                           className="next-btn"
                           onClick={handleNext}
                           disabled={formPage === formTitles.length - 1}
