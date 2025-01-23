@@ -15,8 +15,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.reservation-form > h3 {
+fieldset {
+  border: none;
+}
+
+.reservation-form > h3, legend {
     text-align: center;
+}
+
+legend {
+  font-weight: bold;
+  font-size: larger;
+  margin: 1em;
 }
 
 .buttons {
@@ -25,6 +35,25 @@
 
 .input-error {
   border: 2px solid red;
+}
+
+.form-group {
+  position: relative; /* Make the parent container a positioned element */
+}
+
+.error-message {
+  position: absolute; /* Position relative to the nearest positioned parent */
+  top: 100%; /* Position it just below the input */
+  left: 0; /* Align it with the input's left edge */
+  color: red;
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  visibility: hidden; /* Hide by default */
+}
+
+.error-message[role="alert"] {
+  visibility: visible; /* Show error message when role="alert" is set */
 }
 
 .text-error {

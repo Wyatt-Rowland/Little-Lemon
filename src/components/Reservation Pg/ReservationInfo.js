@@ -26,7 +26,7 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
 
 
     return (
-        <div className="reservation-info-grid">
+        <fieldset className="reservation-info-grid">
               <div className="form-group">
                 <label htmlFor="guests">Guest Number*</label>
                 <select 
@@ -34,6 +34,9 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
                   id="guests" 
                   value={formData.guests} 
                   onChange={handleInputChange} 
+                  aria-invalid={!!formErrors.guests}
+                  aria-describedby="guestsError"
+                  aria-required="true" required
                   className={`select ${formErrors.guests ? "input-error" : ""}`}
                 >
                   <option>0</option>
@@ -43,7 +46,13 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
                         </option>
                         ))}
                     </select>
+                    {formErrors.guests && (
+                      <span id="guestsError" className="error-message" role="alert">
+                        {formErrors.guests}
+                      </span>
+                    )}
                 </div>
+                
                     <div className="form-group">
                         <div className='date-time-container'>
                           <div className="date-time">
@@ -82,11 +91,16 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
                           </div>
                           <div className="date-time">
                             <label htmlFor="time">Time*</label>
-                            <select name="time" id="time" value={formData.time} onChange={handleInputChange} className={`select ${formErrors.time ? "input-error" : ""}`}>
+                            <select name="time" aria-invalid={!!formErrors.time} aria-describedby="timeError"   id="time" value={formData.time}   aria-required="true" required onChange={handleInputChange} className={`select ${formErrors.time ? "input-error" : ""}`}>
                               {generateTimeSlots(availableTimesMap, formData)}
                             </select>
                           </div>
                         </div>
+                        {formErrors.time && (
+                          <span id="timeError" className="error-message" role="alert">
+                            {formErrors.time}
+                          </span>
+                        )}                 
                     </div>
                     <div className="form-group">
                         <label htmlFor="Occasion">Occasion</label>
@@ -111,7 +125,7 @@ const ReservationInfo = ({ formData, setFormData, formErrors, availableDates, av
                     <div className="form-group">
                         <h5>Fields marked with * are required</h5> 
                     </div>
-                </div>
+                </fieldset>
     );
 }
 

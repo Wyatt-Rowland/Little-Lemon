@@ -35,70 +35,102 @@ const PaymentInfo = ({ formData, setFormData, formErrors }) => {
     };
 
     return (
-        <div className="payment-info-grid">
-        <div className="form-group card-name-container">
-          <label htmlFor="cardName">Name on Card*</label>
-          <input
-            type="text"
-            id="cardName"
-            name="cardName"
-            className={formErrors.cardName ? "input-error" : ""}
-            value={formData.cardName || ""}
-            onChange={handleInputChange}
-            placeholder="Name on Card"
-            required
-          />
-        </div>
-  
-        <div className="form-group cardNumber">
-          <label htmlFor="cardNumber">Card Number*</label>
-          <input
-            type="text"
-            id="cardNumber"
-            name="cardNumber"
-            className={formErrors.cardNumber ? "input-error" : ""}
-            value={formData.cardNumber || ""}
-            onChange={handleInputChange}
-            placeholder="1234 5678 9012 3456"
-            maxLength="19" // For card number format
-            inputMode="numeric" // Brings up numeric keyboard on mobile devices
-            required
-          />
-        </div>
-  
-        <div className="form-group exp-date">
-          <label htmlFor="expDate">Expiration Date*</label>
-          <input
-            type="text"
-            id="expDate"
-            name="expDate"
-            className={formErrors.expDate ? "input-error" : ""}
-            value={formData.expDate || ""}
-            onChange={handleInputChange}
-            placeholder="MM/YY"
-            maxLength="5" // To ensure format matches "MM/YY"
-            pattern="(0[1-9]|1[0-2])\/\d{2}" // Regex for valid MM/YY format
-            title="Enter a valid expiration date in MM/YY format"
-            required
-          />
-        </div>
-  
-        <div className="form-group cvv">
-          <label htmlFor="CVV">CVV*</label>
-          <input
-            type="password" // Mask the CVV
-            id="CVV"
-            name="CVV"
-            value={formData.CVV || ""}
-            className={formErrors.CVV ? "input-error" : ""}
-            onChange={handleInputChange}
-            placeholder="XXX"
-            maxLength="4" // Some cards like AmEx have 4 digits
-            inputMode="numeric"
-            required
-          />
-        </div>
-      </div>
+        <fieldset className="payment-info-grid">
+          <div className="form-group card-name-container">
+            <label htmlFor="cardName">Name on Card*</label>
+            <input
+              type="text"
+              id="cardName"
+              name="cardName"
+              className={formErrors.cardName ? "input-error" : ""}
+              value={formData.cardName || ""}
+              onChange={handleInputChange}
+              placeholder="Name on Card"
+              aria-invalid={!!formErrors.cardName}
+              aria-describedby="cardNameError"
+              aria-required="true"
+              required
+            />
+            {formErrors.cardName && (
+              <span id="cardNameError" className="error-message" role="alert">
+                {formErrors.cardName}
+              </span>
+            )}
+          </div>
+
+          <div className="form-group cardNumber">
+            <label htmlFor="cardNumber">Card Number*</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              className={formErrors.cardNumber ? "input-error" : ""}
+              value={formData.cardNumber || ""}
+              onChange={handleInputChange}
+              placeholder="1234 5678 9012 3456"
+              maxLength="19" // For card number format
+              inputMode="numeric" // Brings up numeric keyboard on mobile devices
+              aria-invalid={!!formErrors.cardNumber}
+              aria-describedby="cardNumberError"
+              aria-required="true"
+              required
+            />
+            {formErrors.cardNumber && (
+              <span id="cardNumberError" className="error-message" role="alert">
+                {formErrors.cardNumber}
+              </span>
+            )}            
+          </div>
+
+          <div className="form-group exp-date">
+            <label htmlFor="expDate">Expiration Date*</label>
+            <input
+              type="text"
+              id="expDate"
+              name="expDate"
+              className={formErrors.expDate ? "input-error" : ""}
+              value={formData.expDate || ""}
+              onChange={handleInputChange}
+              placeholder="MM/YY"
+              maxLength="5" // To ensure format matches "MM/YY"
+              pattern="(0[1-9]|1[0-2])\/\d{2}" // Regex for valid MM/YY format
+              title="Enter a valid expiration date in MM/YY format"
+              aria-invalid={!!formErrors.expDate}
+              aria-describedby="expDateError"              
+              aria-required="true"
+              required
+            />
+            {formErrors.expDate && (
+              <span id="expDateError" className="error-message" role="alert">
+                {formErrors.expDate}
+              </span>
+            )}
+          </div>
+
+          <div className="form-group cvv">
+            <label htmlFor="CVV">CVV*</label>
+            <input
+              type="password" // Mask the CVV
+              id="CVV"
+              name="CVV"
+              value={formData.CVV || ""}
+              className={formErrors.CVV ? "input-error" : ""}
+              onChange={handleInputChange}
+              placeholder="XXX"
+              maxLength="4" // Some cards like AmEx have 4 digits
+              inputMode="numeric"
+              aria-invalid={!!formErrors.CVV}
+              aria-describedby="CVVError"
+              aria-required="true"
+              required
+            />
+            {formErrors.CVV && (
+              <span id="CVVError" className="error-message" role="alert">
+                {formErrors.CVV}
+              </span>
+            )}
+          </div>
+      </fieldset>
     );
 }
 

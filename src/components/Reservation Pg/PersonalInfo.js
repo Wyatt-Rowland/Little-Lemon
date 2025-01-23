@@ -39,7 +39,7 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
   };
 
   return (
-    <div className="personal-info-grid">
+    <fieldset className="personal-info-grid">
       <div className="form-group">
       <label htmlFor="firstName">
         First Name*
@@ -52,8 +52,16 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
           value={formData.firstName}
           onChange={handleInputChange}
           placeholder="Enter your first name"
+          aria-invalid={!!formErrors.firstName}
+          aria-describedby="firstNameError"         
+          aria-required="true"
           required
         />
+        {formErrors.firstName && (
+          <span id="firstNameError" className="error-message" role="alert">
+            {formErrors.firstName}
+          </span>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="lastName">Last Name*</label>
@@ -65,8 +73,16 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
           onChange={handleInputChange}
           className={formErrors.lastName ? "input-error" : ""}
           placeholder="Enter your last name"
+          aria-invalid={!!formErrors.lastName}
+          aria-describedby="lastNameError"          
+          aria-required="true"
           required
         />
+        {formErrors.lastName && (
+          <span id="lastNameError" className="error-message" role="alert">
+            {formErrors.lastName}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -80,8 +96,16 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
           onChange={handleInputChange}
           placeholder="+1 (111) 222 3333"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          aria-invalid={!!formErrors.phoneNumber}
+          aria-describedby="phoneNumberError"
+          aria-required="true"
           required
         />
+        {formErrors.phoneNumber && (
+          <span id="phoneNumberError" className="error-message" role="alert">
+            {formErrors.phoneNumber}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -94,8 +118,16 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
           className={formErrors.email ? "input-error" : ""}
           onChange={handleInputChange}
           placeholder="Enter your email"
+          aria-invalid={!!formErrors.email}
+          aria-describedby="emailError"
+          aria-required="true"
           required
         />
+        {formErrors.email && (
+          <span id="emailError" className="error-message" role="alert">
+            {formErrors.email}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -113,7 +145,7 @@ const PersonalInfo = ({ formData, setFormData, formErrors }) => {
           </select>
         </div>
       </div>
-    </div>
+    </fieldset>
   );
 };
 

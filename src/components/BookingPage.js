@@ -91,7 +91,7 @@ const validateCurrentStep = () => {
       break;
     case 1: // Personal Info
       if (!isValidPhoneNumber(formData.phoneNumber)) {
-        errors.phoneNumber = "Invalid phone number format.";
+        errors.phoneNumber = "Invalid phone number.";
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
         errors.email = "Invalid email address.";
@@ -134,13 +134,13 @@ const validateCurrentStep = () => {
               handleFormSubmit();
               setFormPage((prevPage) => prevPage + 1); // Proceed to success page
           } else {
-              alert("Please fill in all required fields before submitting.");
+              // alert("Please fill in all required fields before submitting.");
           }
       }
     } else if (validateCurrentStep()) {
       setFormPage((prevPage) => prevPage + 1);
     } else {
-      alert("Please fill in all required fields before proceeding.");
+      // alert("Please fill in all required fields before proceeding.");
     }
   };
 
@@ -246,6 +246,10 @@ const validateCurrentStep = () => {
                     <div
                       className="circle"
                       role="progressbar"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      aria-valuenow={progressPercent}
+                      aria-label="Form Progress"
                       style={{
                         backgroundImage:
                           formPage === formTitles.length - 1
@@ -259,16 +263,17 @@ const validateCurrentStep = () => {
                   </div>
                 </div>
 
-                <h3>{formTitles[formPage]}</h3>
+                <legend>{formTitles[formPage]}</legend>
                 <form className="form-inputs">
                 {renderFormStep()}                    
                   </form>
-                  <div className="flex-center buttons">
+                  <footer className="flex-center buttons">
                   {formPage < formTitles.length - 1 ? (
                       <>
                         <button
                           className="back-btn"
                           onClick={handleBack}
+                          aria-label="Go to the previous step"
                           disabled={formPage === 0}
                         >
                           Back
@@ -276,6 +281,7 @@ const validateCurrentStep = () => {
                         <button
                            name="next"
                           className="next-btn"
+                          aria-label="Go to the next step"
                           onClick={handleNext}
                           disabled={formPage === formTitles.length - 1}
                         >
@@ -290,7 +296,7 @@ const validateCurrentStep = () => {
                         Make Another Reservation
                       </button>
                     )}                   
-                </div>
+                </footer>
             </div>
         </div>
     );
