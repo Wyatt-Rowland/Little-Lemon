@@ -4,7 +4,7 @@ Welcome to Little Lemon, a capstone project for Meta's Front-end Developer Cours
 
 ## Live Preview
 
-You can view the project live at: [Little Lemon - Live Demo](https://vaccinaldig3710.github.io/Little-Lemon/)
+You can view the project live at: [Little Lemon - Live Demo](https://Wyatt-Rowland.github.io/Little-Lemon/)
 
 ## Project Overview
 
