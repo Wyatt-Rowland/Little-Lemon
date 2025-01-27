@@ -1,21 +1,23 @@
 {
   "files": {
-    "main.css": "/Little-Lemon/static/css/main.d4b9f505.css",
-    "main.js": "/Little-Lemon/static/js/main.24ef7c19.js",
+    "main.css": "/Little-Lemon/static/css/main.d67b264b.css",
+    "main.js": "/Little-Lemon/static/js/main.5c23cf3f.js",
     "static/js/453.99c1801e.chunk.js": "/Little-Lemon/static/js/453.99c1801e.chunk.js",
     "static/media/bruchetta.svg": "/Little-Lemon/static/media/bruchetta.29ea078fea3d3120ed22402e901b5bbc.svg",
     "static/media/greek salad.jpg": "/Little-Lemon/static/media/greek salad.bed423a1fab5b210e347.jpg",
     "static/media/restauranfood.jpg": "/Little-Lemon/static/media/restauranfood.e8abf5b772b6817189aa.jpg",
+    "static/media/LL guys 2.png": "/Little-Lemon/static/media/LL guys 2.52a5ca15f319ae340187.png",
+    "static/media/LL Guys 1.png": "/Little-Lemon/static/media/LL Guys 1.275a4f658ac96185b889.png",
     "static/media/Tyler Lybrand.jpg": "/Little-Lemon/static/media/Tyler Lybrand.c29b53338e84c806ac41.jpg",
     "static/media/Logo.svg": "/Little-Lemon/static/media/Logo.6c132dfefa69396bba43f72aa595e62f.svg",
     "static/media/moped2.png": "/Little-Lemon/static/media/moped2.9deb8a41f49ae2194a1d.png",
     "index.html": "/Little-Lemon/index.html",
-    "main.d4b9f505.css.map": "/Little-Lemon/static/css/main.d4b9f505.css.map",
-    "main.24ef7c19.js.map": "/Little-Lemon/static/js/main.24ef7c19.js.map",
+    "main.d67b264b.css.map": "/Little-Lemon/static/css/main.d67b264b.css.map",
+    "main.5c23cf3f.js.map": "/Little-Lemon/static/js/main.5c23cf3f.js.map",
     "453.99c1801e.chunk.js.map": "/Little-Lemon/static/js/453.99c1801e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d4b9f505.css",
-    "static/js/main.24ef7c19.js"
+    "static/css/main.d67b264b.css",
+    "static/js/main.5c23cf3f.js"
   ]
 }
