@@ -63,7 +63,7 @@ Styled with responsive design principles for optimal viewing on various devices.
 To run the project locally:
 
 Clone the repository:
-    git clone https://github.com/vaccinaldig3710/Little-Lemon.git
+    git clone https://github.com/Wyatt-Rowland/Little-Lemon.git
 
 Navigate to the project directory:
     cd Little-Lemon

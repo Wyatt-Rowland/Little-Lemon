@@ -8,6 +8,7 @@ import './css/hero.css'
 import './css/specials.css'
 import './css/testimonials.css'
 import './css/booking.css'
+import './css/siteInfo.css'
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';

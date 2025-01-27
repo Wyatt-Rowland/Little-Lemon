@@ -1,6 +1,7 @@
 import Hero from './Hero';
 import Specials from './Specials'
 import Testimonials from './Testimonials.js'
+import SiteInfo from './SiteInfo.js';
 
 const Main = () => {
 
@@ -16,6 +17,9 @@ const Main = () => {
           </div>
           <div className='testimonials-bg'>
             <Testimonials />
+          </div>
+          <div className='testimonials-bg'>
+            <SiteInfo />
           </div>
         </div>
       </main>
