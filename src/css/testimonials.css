@@ -42,7 +42,7 @@
 
 @media (min-width: 500px) { 
     .testimonials-container {
-        grid-template-columns: 1fr 1fr;
+        /* grid-template-columns: 1fr 1fr; */
     }
 }
 

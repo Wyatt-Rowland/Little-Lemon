@@ -62,3 +62,9 @@ code {
 .footer {
   align-self: end; /* Keep it aligned to the bottom if needed */
 }
+
+.construction {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

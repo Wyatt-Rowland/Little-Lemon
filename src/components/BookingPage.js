@@ -267,7 +267,7 @@ const validateCurrentStep = () => {
                 <form className="form-inputs">
                 {renderFormStep()}                    
                   </form>
-                  <footer className="flex-center buttons">
+                  <div className="flex-center buttons">
                   {formPage < formTitles.length - 1 ? (
                       <>
                         <button
@@ -296,7 +296,7 @@ const validateCurrentStep = () => {
                         Make Another Reservation
                       </button>
                     )}                   
-                </footer>
+                </div>
             </div>
         </div>
     );

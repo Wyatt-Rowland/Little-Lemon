@@ -11,7 +11,6 @@ footer {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-    padding: 2rem;
 }
 
 .footer-section > nav {
@@ -29,8 +28,10 @@ footer {
 @media (min-width: 1000px) {
     footer {
         flex-direction: row;
+        gap: 0;
     }
     .footer-section {
         height: 100%;
+        padding: 2rem;
     }
 }
